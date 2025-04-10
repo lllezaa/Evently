@@ -19,7 +19,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|confirmed',
         ]);
 
         User::create([
@@ -28,13 +28,27 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('login.form');
+        return redirect()->route('login');
     }
 
     public function showLoginForm()
     {
         return view('auth');
     }
+
+    // public function login(Request $request)
+    // {
+    //     $credentials = $request->validate([
+    //         'name' => 'required|string',
+    //         'password' => 'required|string',
+    //     ]);
+
+    //     if (Auth::attempt(['name' => $credentials['name'], 'password' => $credentials['password']])) {
+    //         return redirect()->intended('/dashboard');
+    //     }
+
+    //     return back()->withErrors(['name' => 'Неверное имя или пароль']);
+    // }
 
     public function login(Request $request)
     {
@@ -44,9 +58,15 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt(['name' => $credentials['name'], 'password' => $credentials['password']])) {
-            return redirect()->intended('/dashboard');
+            return redirect()->route('home');
         }
 
         return back()->withErrors(['name' => 'Неверное имя или пароль']);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return redirect()->route('login');
     }
 }
