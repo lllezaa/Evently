@@ -10,7 +10,9 @@
     <form method="POST" action="{{ route('register') }}">
     @csrf
     <input type="text" name="name" placeholder="Имя" required>
+    <input type="text" name="lastname" placeholder="Фамилия" required>
     <input type="email" name="email" placeholder="Почта" required>
+    <input type="text" name="login" placeholder="Логин" required>
     <input type="password" name="password" placeholder="Пароль" required>
     <input type="password" name="password_confirmation" placeholder="Подтвердите пароль" required>
     <button type="submit">Зарегистрироваться</button>

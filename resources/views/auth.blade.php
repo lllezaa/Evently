@@ -9,7 +9,7 @@
     <h1>Страница авторизации</h1>
     <form method="POST" action="{{ route('login') }}">
     @csrf
-    <input type="text" name="name" placeholder="Имя" required>
+    <input type="text" name="login" placeholder="Логин" required>
     <input type="password" name="password" placeholder="Пароль" required>
     <button type="submit">Войти</button>
     </form>

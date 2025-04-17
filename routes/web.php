@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventController;
 
 
 Route::get('/', function () {
@@ -20,3 +22,18 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+
+Route::get('/', [EventController::class, 'index'])->name('home'); //не удалять нужно для получения событий
+Route::get('/create-event', [EventController::class, 'create'])->name('create.event');
+Route::post('/store-event', [EventController::class, 'store'])->name('store.event');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/admin/events', [AdminController::class, 'editEvents'])->name('admin.events');
+    Route::post('/admin/events/update/{id}', [AdminController::class, 'updateEvent'])->name('admin.events.update');
+    Route::post('/admin/events/delete/{id}', [AdminController::class, 'deleteEvent'])->name('admin.events.delete');
+
+    Route::get('/admin/users', [AdminController::class, 'editUsers'])->name('admin.users');
+    Route::post('/admin/users/update/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
+    Route::post('/admin/users/delete/{id}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
+});
