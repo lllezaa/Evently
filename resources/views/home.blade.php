@@ -44,6 +44,7 @@
             <p>Адрес: {{ $event->address }}</p>
             <p>Дата и время: {{ $event->date_time_event }}</p>
             <p>Тип события: {{ $event->type->title }}</p>
+            <a href="{{ route('event.show', $event->events_id) }}">Перейти в событие</a>
         </div>
     @endforeach
 

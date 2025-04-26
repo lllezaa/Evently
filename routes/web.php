@@ -37,3 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/users/update/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
     Route::post('/admin/users/delete/{id}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
 });
+
+Route::get('/event/{id}', [EventController::class, 'show'])->name('event.show');
+Route::post('/event/{id}/record', [EventController::class, 'record'])->name('event.record');
+Route::delete('/event/{id}/unrecord', [EventController::class, 'unrecord'])->name('event.unrecord');
