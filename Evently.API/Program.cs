@@ -66,8 +66,11 @@ public class Program
                 Name = "Authorization",
                 Type = SecuritySchemeType.ApiKey
             });
-            
+
             c.OperationFilter<EndpointAuthRequirementFilter>();
+
+            var filePath = Path.Combine(AppContext.BaseDirectory, "Evently.API.xml");
+            c.IncludeXmlComments(filePath);
         });
 
         builder.Services.AddCors(options =>
@@ -94,15 +97,15 @@ public class Program
                 options.SwaggerEndpoint("/api/swagger/v1/swagger.json", "Evently Backend V1");
                 options.RoutePrefix = "api/swagger";
             });
-            
+
             app.UseCors("AllowAll");
         }
-        
+
         app.UseMiddleware<ExceptionsMiddleware>();
-        
+
         app.UseAuthentication();
         app.UseAuthorization();
-        
+
         app.MapControllers();
 
         app.Run();

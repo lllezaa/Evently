@@ -23,6 +23,11 @@ public class AuthController : ControllerBase
         _userService = userService;
     }
 
+    /// <summary>
+    /// Авторизовать пользователя по почте и паролю
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult> Login([FromBody] UserLoginDto dto)
@@ -31,6 +36,11 @@ public class AuthController : ControllerBase
         return Ok(new { token = token });
     }
 
+    /// <summary>
+    /// Регистрирует нового пользователя на основе предоставленных данных.
+    /// </summary>
+    /// <param name="dto">Объект, содержащий данные для регистрации пользователя, такие как Email, пароль и имя.</param>
+    /// <returns>Возвращает результат действия с токеном доступа в случае успешной регистрации.</returns>
     [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegistrationDto dto)
@@ -40,6 +50,10 @@ public class AuthController : ControllerBase
         return Ok(new { token = token });
     }
 
+    /// <summary>
+    /// Получить информацию о текущем авторизованном пользователе
+    /// </summary>
+    /// <returns>Данные пользователя в формате DTO</returns>
     [Authorize]
     [HttpGet("me")]
     public async Task<IActionResult> GetMe()
@@ -50,6 +64,11 @@ public class AuthController : ControllerBase
         return Ok(dto);
     }
 
+    /// <summary>
+    /// Изменяет пароль пользователя на основе предоставленных данных.
+    /// </summary>
+    /// <param name="dto">Объект, содержащий текущий пароль и новый пароль пользователя.</param>
+    /// <returns>Возвращает результат действия в случае успешного изменения пароля.</returns>
     [Authorize]
     [HttpPost("changePassword")]
     public async Task<IActionResult> ChangePassword([FromBody] PasswordChangeDto dto)
