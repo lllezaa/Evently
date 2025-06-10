@@ -7,7 +7,7 @@ using Evently.Services.Validators;
 
 namespace Evently.Services.Services;
 
-public class AuthorizationService
+public class AuthorizationService : IAuthorizationService
 {
     private readonly IUserService _userService;
     private readonly IPasswordHasher _passwordHasher;

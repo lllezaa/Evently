@@ -1,10 +1,14 @@
 using System.Text.Json.Serialization;
+using Evently.API.Contexts;
+using Evently.API.Filters;
+using Evently.API.Middlewares;
 using Evently.Infrastructure.EFCore;
 using Evently.Infrastructure.EFCore.Data;
 using Evently.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace Evently.API;
 
@@ -24,6 +28,8 @@ public class Program
         });
 
         builder.Services.AddHttpContextAccessor();
+
+        builder.Services.AddScoped<UserContext>();
 
         builder.Services.AddInfrastructure();
         builder.Services.AddServices();
@@ -49,7 +55,20 @@ public class Program
         });
 
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "JWT Authorization header using the Bearer scheme.",
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey
+            });
+            
+            c.OperationFilter<EndpointAuthRequirementFilter>();
+        });
 
         builder.Services.AddCors(options =>
         {
@@ -75,14 +94,15 @@ public class Program
                 options.SwaggerEndpoint("/api/swagger/v1/swagger.json", "Survey Backend V1");
                 options.RoutePrefix = "api/swagger";
             });
-
-            
-            app.UseCors("AllowAll");
         }
-
-        app.UseHttpsRedirection();
-
+        
+        app.UseMiddleware<ExceptionsMiddleware>();
+        
+        app.UseAuthentication();
         app.UseAuthorization();
+        app.UseCors("AllowAll"); // переместить сюда
+        
+        app.MapControllers();
 
         app.Run();
     }
