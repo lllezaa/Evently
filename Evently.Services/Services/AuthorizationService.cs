@@ -7,7 +7,7 @@ using Evently.Services.Validators;
 
 namespace Evently.Services.Services;
 
-public class AuthorizationService : IAuthorizationService
+public partial class AuthorizationService : IAuthorizationService
 {
     private readonly IUserService _userService;
     private readonly IPasswordHasher _passwordHasher;
@@ -34,6 +34,11 @@ public class AuthorizationService : IAuthorizationService
 
     public async Task<string> RegisterUser(User user)
     {
+        if (!EmailRegex().IsMatch(user.Email))
+        {
+            throw new BadRequestException("Invalid email format");
+        }
+    
         var isEmailTaken = await _userValidator.IsEmailTaken(user.Email);
         if (isEmailTaken)
         {
@@ -58,4 +63,7 @@ public class AuthorizationService : IAuthorizationService
         user.PasswordHash = _passwordHasher.HashPassword(newPassword);
         await _userService.UpdateAsync(user);
     }
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
+    private static partial System.Text.RegularExpressions.Regex EmailRegex();
 }
