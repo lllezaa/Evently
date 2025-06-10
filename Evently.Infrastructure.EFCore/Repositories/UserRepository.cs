@@ -46,4 +46,9 @@ public class UserRepository : IUserRepository
         await _context.Users.Where(u => u.Id == id).ExecuteDeleteAsync();
         await _context.SaveChangesAsync();
     }
+
+    public async Task<User?> FindByEmailAsync(string email)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+    }
 }

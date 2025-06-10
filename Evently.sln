@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.Infrastructure.EFCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.Services", "Evently.Services\Evently.Services.csproj", "{AD335819-A39C-4A4B-BCB1-1F84FBD9ADDC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.API", "Evently.API\Evently.API.csproj", "{08B15B07-470D-497E-9075-E0AA961DDDC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{AD335819-A39C-4A4B-BCB1-1F84FBD9ADDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD335819-A39C-4A4B-BCB1-1F84FBD9ADDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD335819-A39C-4A4B-BCB1-1F84FBD9ADDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08B15B07-470D-497E-9075-E0AA961DDDC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08B15B07-470D-497E-9075-E0AA961DDDC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08B15B07-470D-497E-9075-E0AA961DDDC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08B15B07-470D-497E-9075-E0AA961DDDC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
