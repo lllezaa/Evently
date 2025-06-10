@@ -1,3 +1,4 @@
+using Evently.API.Contexts;
 using Evently.API.DTOs.User;
 using Evently.API.Mappers;
 using Evently.Core.Services;
@@ -11,10 +12,12 @@ namespace Evently.API.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly UserContext _userContext;
 
-    public UsersController(IUserService userService)
+    public UsersController(IUserService userService, UserContext userContext)
     {
         _userService = userService;
+        _userContext = userContext;
     }
 
     /// <summary>
@@ -37,7 +40,7 @@ public class UsersController : ControllerBase
     /// <param name="dto"></param>
     /// <returns></returns>
     [Authorize(Roles = "Admin")]
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:int}/role")]
     public async Task<IActionResult> ChangeRole(int id, [FromBody] UserRoleChangeDto dto)
     {
         var user = await _userService.GetUserAsync(id);
@@ -45,6 +48,25 @@ public class UsersController : ControllerBase
         await _userService.UpdateAsync(user);
         return Ok();
     }
+
+    /// <summary>
+    /// Обновить информацию о пользовательском аккаунте.
+    /// </summary>
+    /// <param name="dto">Объект DTO, содержащий обновленные данные пользователя.</param>
+    /// <returns>Результат выполнения операции.</returns>
+    [Authorize]
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateAccount([FromBody] UserUpdateDto dto)
+    {
+        var userId = _userContext.UserId;
+        var user = await _userService.GetUserAsync(userId);
+        user.Email = dto.Email;
+        user.FirstName = dto.FirstName;
+        user.LastName = dto.LastName;
+        await _userService.UpdateAsync(user);
+        return Ok();
+    }
+
 
     /// <summary>
     /// Удаление пользователя по идентификатору.
