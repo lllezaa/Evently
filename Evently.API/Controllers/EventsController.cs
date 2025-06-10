@@ -24,6 +24,10 @@ public class EventsController : ControllerBase
         _registrationService = registrationService;
     }
 
+    /// <summary>
+    /// Получить список ивентов
+    /// </summary>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetEvents()
@@ -33,6 +37,11 @@ public class EventsController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Получить информацию об ивенте по его идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор ивента.</param>
+    /// <returns>Возвращает информацию об ивенте.</returns>
     [AllowAnonymous]
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetEvent([FromRoute] int id)
@@ -42,6 +51,11 @@ public class EventsController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Регистрирует пользователя на указанный ивент.
+    /// </summary>
+    /// <param name="id">Идентификатор ивента, на который регистрируется пользователь.</param>
+    /// <returns>Результат действия в виде HTTP-ответа.</returns>
     [Authorize]
     [HttpPost("{id:int}/register")]
     public async Task<IActionResult> RegisterForEvent([FromRoute] int id)
@@ -52,6 +66,10 @@ public class EventsController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Получить ивенты на которые записан пользователь
+    /// </summary>
+    /// <returns>A list of events associated with the user's registrations.</returns>
     [Authorize]
     [HttpGet("my")]
     public async Task<IActionResult> GetMyEvents()
@@ -63,7 +81,12 @@ public class EventsController : ControllerBase
         var result = events.Select(EventMapper.ModelToOutputDto);
         return Ok(result);
     }
-    
+
+    /// <summary>
+    /// Создать новый ивент.
+    /// </summary>
+    /// <param name="dto">Данные для создания ивента.</param>
+    /// <returns>Возвращает успешный результат при успешном создании ивента.</returns>
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateEvent([FromBody] EventCreateDto dto)
@@ -73,6 +96,12 @@ public class EventsController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Обновить данные существующего ивента.
+    /// </summary>
+    /// <param name="id">Идентификатор ивента, который необходимо обновить.</param>
+    /// <param name="dto">Объект с данными для обновления ивента.</param>
+    /// <returns>Возвращает подтверждение успешного обновления.</returns>
     [Authorize(Roles = "Admin")]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateEvent([FromRoute] int id, [FromBody] EventUpdateDto dto)
@@ -82,6 +111,11 @@ public class EventsController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Удаляет ивент по указанному идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор удаляемого ивента.</param>
+    /// <returns>Результат выполнения операции в виде HTTP-ответа.</returns>
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteEvent([FromRoute] int id)

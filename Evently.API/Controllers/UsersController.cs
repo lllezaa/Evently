@@ -17,6 +17,10 @@ public class UsersController : ControllerBase
         _userService = userService;
     }
 
+    /// <summary>
+    /// Получить список пользователей
+    /// </summary>
+    /// <returns></returns>
     [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<IActionResult> GetUsers()
@@ -26,6 +30,12 @@ public class UsersController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Сменить роль пользователю (0 - юзер, 1 - админ)
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="dto"></param>
+    /// <returns></returns>
     [Authorize(Roles = "Admin")]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> ChangeRole(int id, [FromBody] UserRoleChangeDto dto)
@@ -36,6 +46,11 @@ public class UsersController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Удаление пользователя по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор пользователя, подлежащего удалению.</param>
+    /// <returns>Результат выполнения операции.</returns>
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteUser(int id)
