@@ -1,5 +1,7 @@
+using Evently.API.Contexts;
 using Evently.API.DTOs.Event;
 using Evently.API.Mappers;
+using Evently.Core.Models;
 using Evently.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +13,15 @@ namespace Evently.API.Controllers;
 public class EventsController : ControllerBase
 {
     private readonly IEventService _eventService;
+    private readonly UserContext _userContext;
+    private readonly IRegistrationService _registrationService;
 
-    public EventsController(IEventService eventService)
+    public EventsController(IEventService eventService, UserContext userContext,
+        IRegistrationService registrationService)
     {
         _eventService = eventService;
+        _userContext = userContext;
+        _registrationService = registrationService;
     }
 
     [AllowAnonymous]
@@ -35,6 +42,28 @@ public class EventsController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize]
+    [HttpPost("{id:int}/register")]
+    public async Task<IActionResult> RegisterForEvent([FromRoute] int id)
+    {
+        var userId = _userContext.UserId;
+        var registration = new Registration { UserId = userId, EventId = id };
+        await _registrationService.AddAsync(registration);
+        return Ok();
+    }
+
+    [Authorize]
+    [HttpGet("my")]
+    public async Task<IActionResult> GetMyEvents()
+    {
+        var userId = _userContext.UserId;
+        var registrations = await _registrationService.GetRegistrationsByUserIdAsync(userId);
+        var events = await Task.WhenAll(
+            registrations.Select(r => _eventService.GetEventAsync(r.EventId)));
+        var result = events.Select(EventMapper.ModelToOutputDto);
+        return Ok(result);
+    }
+    
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateEvent([FromBody] EventCreateDto dto)
