@@ -51,7 +51,7 @@ public class UserService : IUserService
 
     private async Task<User> GetUserByIdOrThrow(int userId)
     {
-        var user = await _userRepository.GetByIdAsync(userId);
+        var user = await _userRepository.GetByIdAsNoTrackingAsync(userId);
         if (user is null)
         {
             throw new NotFoundException("User not found");
