@@ -7,4 +7,5 @@ public interface IAuthorizationService
 {
     Task<string> LogInUser(string email, string password);
     Task<string> RegisterUser(User user);
+    Task ChangePassword(int userId, string oldPassword, string newPassword);
 }

@@ -41,9 +41,21 @@ public class AuthorizationService : IAuthorizationService
         }
 
         user.PasswordHash = _passwordHasher.HashPassword(user.PasswordHash);
-        
+
         await _userService.AddAsync(user);
         var token = TokenHelper.GetAuthToken(user);
         return token;
+    }
+
+    public async Task ChangePassword(int userId, string oldPassword, string newPassword)
+    {
+        var user = await _userService.GetUserAsync(userId);
+        if (!_passwordHasher.Verify(oldPassword, user.PasswordHash))
+        {
+            throw new UnauthorizedException("Password is incorrect");
+        }
+
+        user.PasswordHash = _passwordHasher.HashPassword(newPassword);
+        await _userService.UpdateAsync(user);
     }
 }

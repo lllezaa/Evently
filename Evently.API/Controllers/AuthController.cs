@@ -49,4 +49,13 @@ public class AuthController : ControllerBase
         var dto = UserMapper.ModelToOutputDto(model);
         return Ok(dto);
     }
+
+    [Authorize]
+    [HttpPost("changePassword")]
+    public async Task<IActionResult> ChangePassword([FromBody] PasswordChangeDto dto)
+    {
+        var userId = _userContext.UserId;
+        await _authorizationService.ChangePassword(userId, dto.OldPassword, dto.NewPassword);
+        return Ok();
+    }
 }
