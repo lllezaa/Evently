@@ -13,7 +13,7 @@ public class UserService : IUserService
     {
         _userRepository = userRepository;
     }
-    
+
     public async Task AddAsync(User user)
     {
         await _userRepository.AddAsync(user);
@@ -22,6 +22,11 @@ public class UserService : IUserService
     public async Task UpdateAsync(User user)
     {
         await CheckUserByIdOrThrow(user.Id);
+        if (!Enum.IsDefined(typeof(Role), user.Role))
+        {
+            throw new BadRequestException("Role is not valid");
+        }
+
         await _userRepository.UpdateAsync(user);
     }
 
@@ -59,7 +64,7 @@ public class UserService : IUserService
 
         return user;
     }
-    
+
     private async Task CheckUserByIdOrThrow(int userId)
     {
         var user = await GetUserByIdOrThrow(userId);
