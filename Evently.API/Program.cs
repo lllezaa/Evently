@@ -78,8 +78,8 @@ public class Program
                     policyBuilder
                         .AllowAnyOrigin()
                         .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .SetIsOriginAllowedToAllowWildcardSubdomains();
+                        .AllowAnyMethod();
+                    // .SetIsOriginAllowedToAllowWildcardSubdomains();
                 });
         });
 
@@ -91,16 +91,17 @@ public class Program
             app.UseSwagger(options => { options.RouteTemplate = "api/swagger/{documentName}/swagger.json"; });
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/api/swagger/v1/swagger.json", "Survey Backend V1");
+                options.SwaggerEndpoint("/api/swagger/v1/swagger.json", "Evently Backend V1");
                 options.RoutePrefix = "api/swagger";
             });
+            
+            app.UseCors("AllowAll");
         }
         
         app.UseMiddleware<ExceptionsMiddleware>();
         
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseCors("AllowAll"); // переместить сюда
         
         app.MapControllers();
 
