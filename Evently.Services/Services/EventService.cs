@@ -1,6 +1,7 @@
 using Evently.Core.Models;
 using Evently.Core.Repositories;
 using Evently.Core.Services;
+using Evently.Services.Exceptions;
 
 namespace Evently.Services.Services;
 
@@ -12,29 +13,47 @@ public class EventService : IEventService
     {
         _eventRepository = eventRepository;
     }
-    
+
     public async Task AddAsync(Event eventModel)
     {
-        throw new NotImplementedException();
+        await _eventRepository.AddAsync(eventModel);
     }
 
     public async Task UpdateAsync(Event eventModel)
     {
-        throw new NotImplementedException();
+        await CheckEventByIdOrThrow(eventModel.Id);
+        await _eventRepository.UpdateAsync(eventModel);
     }
 
     public async Task DeleteAsync(int eventId)
     {
-        throw new NotImplementedException();
+        await CheckEventByIdOrThrow(eventId);
+        await _eventRepository.DeleteAsync(eventId);
     }
 
     public async Task<IEnumerable<Event>> GetEventsAsync()
     {
-        throw new NotImplementedException();
+        return await _eventRepository.GetAllAsync();
     }
 
     public async Task<Event> GetEventAsync(int eventId)
     {
-        throw new NotImplementedException();
+        return await GetEventByIdOrThrow(eventId);
+    }
+
+    private async Task<Event> GetEventByIdOrThrow(int eventId)
+    {
+        var eventModel = await _eventRepository.GetByIdAsNoTrackingAsync(eventId);
+        if (eventModel is null)
+        {
+            throw new NotFoundException("Event not found");
+        }
+
+        return eventModel;
+    }
+
+    private async Task CheckEventByIdOrThrow(int eventId)
+    {
+        var eventModel = await GetEventByIdOrThrow(eventId);
     }
 }
