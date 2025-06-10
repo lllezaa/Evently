@@ -41,6 +41,14 @@ public class UserService : IUserService
         return await GetUserByIdOrThrow(userId);
     }
 
+    public async Task<User> GetUserByEmailAsync(string email)
+    {
+        var user = await _userRepository.FindByEmailAsync(email);
+        if (user is null)
+            throw new NotFoundException("User not found");
+        return user;
+    }
+
     private async Task<User> GetUserByIdOrThrow(int userId)
     {
         var user = await _userRepository.GetByIdAsync(userId);
