@@ -50,12 +50,12 @@ public class UsersController : ControllerBase
     }
 
     /// <summary>
-    /// Обновить информацию о пользовательском аккаунте.
+    /// Обновить информацию об авторизованном аккаунте.
     /// </summary>
     /// <param name="dto">Объект DTO, содержащий обновленные данные пользователя.</param>
     /// <returns>Результат выполнения операции.</returns>
     [Authorize]
-    [HttpPut("{id:int}")]
+    [HttpPut]
     public async Task<IActionResult> UpdateAccount([FromBody] UserUpdateDto dto)
     {
         var userId = _userContext.UserId;
