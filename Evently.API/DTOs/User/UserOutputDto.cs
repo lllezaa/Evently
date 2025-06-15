@@ -9,4 +9,5 @@ public class UserOutputDto
     public required string FirstName { get; set; }
     public string? LastName { get; set; }
     public required Role Role { get; set; }
+    public bool IsBlocked { get; set; }
 }

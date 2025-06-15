@@ -13,6 +13,7 @@ public class User
     public required string PasswordHash { get; set; }
     
     public required Role Role { get; set; }
+    public bool IsBlocked { get; set; }
     
     public ICollection<Registration> Registrations { get; set; } = new List<Registration>();
 }

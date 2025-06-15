@@ -11,6 +11,7 @@ public static class UserMapper
         Email = user.Email,
         FirstName = user.FirstName,
         LastName = user.LastName,
-        Role = user.Role
+        Role = user.Role,
+        IsBlocked = user.IsBlocked
     };
 }

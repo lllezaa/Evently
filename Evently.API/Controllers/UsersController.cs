@@ -40,13 +40,23 @@ public class UsersController : ControllerBase
     /// <param name="dto"></param>
     /// <returns></returns>
     [Authorize(Roles = "Admin")]
-    [HttpPut("{id:int}/role")]
+    [HttpPatch("{id:int}/role")]
     public async Task<IActionResult> ChangeRole(int id, [FromBody] UserRoleChangeDto dto)
     {
         var user = await _userService.GetUserAsync(id);
         user.Role = dto.Role;
         await _userService.UpdateAsync(user);
         return Ok();
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPatch("{id:int}/block")]
+    public async Task<IActionResult> ToggleUserBlock(int id)
+    {
+        var user = await _userService.GetUserAsync(id);
+        user.IsBlocked = !user.IsBlocked;
+        await _userService.UpdateAsync(user);
+        return Ok(new { blocked = user.IsBlocked });
     }
 
     /// <summary>
