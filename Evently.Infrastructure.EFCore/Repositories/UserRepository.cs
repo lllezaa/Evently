@@ -24,7 +24,7 @@ public class UserRepository : IUserRepository
         return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
     }
 
-    public async Task<IEnumerable<User>> GetAllAsync()
+    public async Task<IEnumerable<User>> GetAllAsync(int offset = 0, int limit = 10)
     {
         return await _context.Users.ToListAsync();
     }

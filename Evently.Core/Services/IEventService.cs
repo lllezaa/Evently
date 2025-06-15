@@ -9,6 +9,6 @@ public interface IEventService
     Task AddAsync(Event eventModel);
     Task UpdateAsync(Event eventModel);
     Task DeleteAsync(int eventId);
-    Task<IEnumerable<Event>> GetEventsAsync();
+    Task<IEnumerable<Event>> GetEventsAsync(int offset, int limit);
     Task<Event> GetEventAsync(int eventId);
 }

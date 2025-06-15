@@ -36,9 +36,9 @@ public class UserService : IUserService
         await _userRepository.DeleteAsync(userId);
     }
 
-    public async Task<IEnumerable<User>> GetUsersAsync()
+    public async Task<IEnumerable<User>> GetUsersAsync(int offset = 0, int limit = 10)
     {
-        return await _userRepository.GetAllAsync();
+        return await _userRepository.GetAllAsync(offset, limit);
     }
 
     public async Task<User> GetUserAsync(int userId)

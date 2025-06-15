@@ -9,7 +9,7 @@ public interface IUserService
     Task AddAsync(User user);
     Task UpdateAsync(User user);
     Task DeleteAsync(int userId);
-    Task<IEnumerable<User>> GetUsersAsync();
+    Task<IEnumerable<User>> GetUsersAsync(int offset, int limit);
     Task<User> GetUserAsync(int userId);
     Task<User> GetUserByEmailAsync(string email);
 }

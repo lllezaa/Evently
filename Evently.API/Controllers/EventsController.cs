@@ -30,9 +30,9 @@ public class EventsController : ControllerBase
     /// <returns></returns>
     [AllowAnonymous]
     [HttpGet]
-    public async Task<IActionResult> GetEvents()
+    public async Task<IActionResult> GetEvents([FromQuery] int offset = 0, [FromQuery] int limit = 10)
     {
-        var events = await _eventService.GetEventsAsync();
+        var events = await _eventService.GetEventsAsync(offset, limit);
         var result = events.Select(EventMapper.ModelToOutputDto);
         return Ok(result);
     }

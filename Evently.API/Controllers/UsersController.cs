@@ -26,9 +26,9 @@ public class UsersController : ControllerBase
     /// <returns></returns>
     [Authorize(Roles = "Admin")]
     [HttpGet]
-    public async Task<IActionResult> GetUsers()
+    public async Task<IActionResult> GetUsers([FromQuery] int offset = 0, [FromQuery] int limit = 10)
     {
-        var users = await _userService.GetUsersAsync();
+        var users = await _userService.GetUsersAsync(offset, limit);
         var result = users.Select(UserMapper.ModelToOutputDto);
         return Ok(result);
     }

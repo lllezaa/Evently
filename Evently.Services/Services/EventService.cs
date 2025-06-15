@@ -31,9 +31,9 @@ public class EventService : IEventService
         await _eventRepository.DeleteAsync(eventId);
     }
 
-    public async Task<IEnumerable<Event>> GetEventsAsync()
+    public async Task<IEnumerable<Event>> GetEventsAsync(int offset, int limit)
     {
-        return await _eventRepository.GetAllAsync();
+        return await _eventRepository.GetAllAsync(offset, limit);
     }
 
     public async Task<Event> GetEventAsync(int eventId)

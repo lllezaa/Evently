@@ -24,9 +24,9 @@ public class EventRepository : IEventRepository
         return await _context.Events.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
     }
 
-    public async Task<IEnumerable<Event>> GetAllAsync()
+    public async Task<IEnumerable<Event>> GetAllAsync(int offset = 0, int limit = 10)
     {
-        return await _context.Events.ToListAsync();
+        return await _context.Events.Skip(offset).Take(limit).ToListAsync();
     }
 
     public async Task AddAsync(Event entity)
