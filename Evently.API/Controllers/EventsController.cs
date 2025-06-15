@@ -43,7 +43,7 @@ public class EventsController : ControllerBase
             EventTimeFilter.Past => await _eventService.GetPastEventsAsync(offset, limit),
             _ => await _eventService.GetEventsAsync(offset, limit)
         };
-        var result = events.Select(EventMapper.ModelToOutputDto);
+        var result = EventMapper.ModelToOutputDto(events);
         return Ok(result);
     }
 
@@ -53,7 +53,7 @@ public class EventsController : ControllerBase
         [FromQuery] int limit = 10)
     {
         var events = await _eventService.GetEventsByQueryAsync(searchTerm, offset, limit);
-        var result = events.Select(EventMapper.ModelToOutputDto);
+        var result = EventMapper.ModelToOutputDto(events);
         return Ok(result);
     }
 
@@ -98,7 +98,7 @@ public class EventsController : ControllerBase
         var registrations = await _registrationService.GetRegistrationsByUserIdAsync(userId);
         var events = await Task.WhenAll(
             registrations.Select(r => _eventService.GetEventAsync(r.EventId)));
-        var result = events.Select(EventMapper.ModelToOutputDto);
+        var result = EventMapper.ModelToOutputDto(events);
         return Ok(result);
     }
 

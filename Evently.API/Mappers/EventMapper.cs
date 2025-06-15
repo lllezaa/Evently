@@ -27,4 +27,14 @@ public static class EventMapper
         Description = dto.Description,
         Date = dto.Date,
     };
+
+    public static EventListOutputDto ModelToOutputDto(IEnumerable<Event> events)
+    {
+        var enumerable = events.ToList();
+        return new EventListOutputDto
+        {
+            Items = enumerable.Select(ModelToOutputDto).ToList(),
+            Total = enumerable.Count
+        };
+    }
 }
