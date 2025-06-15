@@ -10,6 +10,8 @@ public interface IEventService
     Task UpdateAsync(Event eventModel);
     Task DeleteAsync(int eventId);
     Task<IEnumerable<Event>> GetEventsAsync(int offset, int limit);
+    Task<IEnumerable<Event>> GetUpcomingEventsAsync(int offset, int limit);
+    Task<IEnumerable<Event>> GetPastEventsAsync(int offset, int limit);
     Task<Event> GetEventAsync(int eventId);
     Task<IEnumerable<Event>> GetEventsByQueryAsync(string query, int offset, int limit);
 }

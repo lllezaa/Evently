@@ -36,6 +36,16 @@ public class EventService : IEventService
         return await _eventRepository.GetAllAsync(offset, limit);
     }
 
+    public async Task<IEnumerable<Event>> GetUpcomingEventsAsync(int offset, int limit)
+    {
+        return await _eventRepository.GetUpcomingEventsAsync(offset, limit);
+    }
+
+    public async Task<IEnumerable<Event>> GetPastEventsAsync(int offset, int limit)
+    {
+        return await _eventRepository.GetPastEventsAsync(offset, limit);
+    }
+
     public async Task<Event> GetEventAsync(int eventId)
     {
         return await GetEventByIdOrThrow(eventId);

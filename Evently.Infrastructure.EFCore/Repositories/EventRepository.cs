@@ -51,10 +51,20 @@ public class EventRepository : IEventRepository
     {
         var queryLower = query.ToLower();
         return await _context.Events.Where(e =>
-            EF.Functions.Like(e.Title.ToLower(), $"%{queryLower}%") ||
-            EF.Functions.Like(e.Description.ToLower(), $"%{queryLower}%"))
+                EF.Functions.Like(e.Title.ToLower(), $"%{queryLower}%") ||
+                EF.Functions.Like(e.Description.ToLower(), $"%{queryLower}%"))
             .Skip(offset)
             .Take(limit)
             .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Event>> GetUpcomingEventsAsync(int offset, int limit)
+    {
+        return await _context.Events.Where(e => e.Date > DateTime.UtcNow).Skip(offset).Take(limit).ToListAsync();
+    }
+
+    public async Task<IEnumerable<Event>> GetPastEventsAsync(int offset, int limit)
+    {
+        return await _context.Events.Where(e => e.Date < DateTime.UtcNow).Skip(offset).Take(limit).ToListAsync();
     }
 }

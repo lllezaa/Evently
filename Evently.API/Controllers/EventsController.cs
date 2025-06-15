@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using Evently.API.Contexts;
 using Evently.API.DTOs.Event;
+using Evently.API.Filters;
 using Evently.API.Mappers;
 using Evently.Core.Models;
 using Evently.Core.Services;
@@ -30,9 +33,16 @@ public class EventsController : ControllerBase
     /// <returns></returns>
     [AllowAnonymous]
     [HttpGet]
-    public async Task<IActionResult> GetEvents([FromQuery] int offset = 0, [FromQuery] int limit = 10)
+    public async Task<IActionResult> GetEvents([FromQuery] int offset = 0, [FromQuery] int limit = 10,
+        [FromQuery] [EnumDataType(typeof(EventTimeFilter))]
+        EventTimeFilter filter = EventTimeFilter.All)
     {
-        var events = await _eventService.GetEventsAsync(offset, limit);
+        var events = filter switch
+        {
+            EventTimeFilter.Upcoming => await _eventService.GetUpcomingEventsAsync(offset, limit),
+            EventTimeFilter.Past => await _eventService.GetPastEventsAsync(offset, limit),
+            _ => await _eventService.GetEventsAsync(offset, limit)
+        };
         var result = events.Select(EventMapper.ModelToOutputDto);
         return Ok(result);
     }
