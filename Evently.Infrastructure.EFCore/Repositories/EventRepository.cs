@@ -52,7 +52,7 @@ public class EventRepository : IEventRepository
         var queryLower = query.ToLower();
         return await _context.Events.Where(e =>
             EF.Functions.Like(e.Title.ToLower(), $"%{queryLower}%") ||
-            EF.Functions.Like(e.Description, $"%{queryLower}%"))
+            EF.Functions.Like(e.Description.ToLower(), $"%{queryLower}%"))
             .Skip(offset)
             .Take(limit)
             .ToListAsync();
