@@ -11,4 +11,5 @@ public interface IEventService
     Task DeleteAsync(int eventId);
     Task<IEnumerable<Event>> GetEventsAsync(int offset, int limit);
     Task<Event> GetEventAsync(int eventId);
+    Task<IEnumerable<Event>> GetEventsByQueryAsync(string query, int offset, int limit);
 }

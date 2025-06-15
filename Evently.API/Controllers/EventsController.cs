@@ -37,6 +37,16 @@ public class EventsController : ControllerBase
         return Ok(result);
     }
 
+    [AllowAnonymous]
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchEvents([FromQuery] string searchTerm, [FromQuery] int offset = 0,
+        [FromQuery] int limit = 10)
+    {
+        var events = await _eventService.GetEventsByQueryAsync(searchTerm, offset, limit);
+        var result = events.Select(EventMapper.ModelToOutputDto);
+        return Ok(result);
+    }
+
     /// <summary>
     /// Получить информацию об ивенте по его идентификатору.
     /// </summary>

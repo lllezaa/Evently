@@ -41,6 +41,11 @@ public class EventService : IEventService
         return await GetEventByIdOrThrow(eventId);
     }
 
+    public async Task<IEnumerable<Event>> GetEventsByQueryAsync(string query, int offset, int limit)
+    {
+        return await _eventRepository.GetEventsByQueryAsync(query, offset, limit);
+    }
+
     private async Task<Event> GetEventByIdOrThrow(int eventId)
     {
         var eventModel = await _eventRepository.GetByIdAsNoTrackingAsync(eventId);

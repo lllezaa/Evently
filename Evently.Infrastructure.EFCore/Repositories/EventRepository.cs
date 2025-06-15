@@ -46,4 +46,15 @@ public class EventRepository : IEventRepository
         await _context.Events.Where(e => e.Id == id).ExecuteDeleteAsync();
         await _context.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<Event>> GetEventsByQueryAsync(string query, int offset, int limit)
+    {
+        var queryLower = query.ToLower();
+        return await _context.Events.Where(e =>
+            EF.Functions.Like(e.Title.ToLower(), $"%{queryLower}%") ||
+            EF.Functions.Like(e.Description, $"%{queryLower}%"))
+            .Skip(offset)
+            .Take(limit)
+            .ToListAsync();
+    }
 }
