@@ -10,6 +10,7 @@ public static class EventMapper
         Id = eventModel.Id,
         Title = eventModel.Title,
         Description = eventModel.Description,
+        Address = eventModel.Address,
         Date = eventModel.Date,
     };
 
@@ -17,6 +18,7 @@ public static class EventMapper
     {
         Title = dto.Title,
         Description = dto.Description,
+        Address = dto.Address,
         Date = dto.Date,
     };
 
@@ -25,6 +27,7 @@ public static class EventMapper
         Id = id,
         Title = dto.Title,
         Description = dto.Description,
+        Address = dto.Address,
         Date = dto.Date,
     };
 
