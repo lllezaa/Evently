@@ -2,6 +2,8 @@ using Evently.API.Contexts;
 using Evently.API.DTOs.Auth;
 using Evently.API.Mappers;
 using Evently.Core.Services;
+using Evently.Services;
+using Evently.Services.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IAuthorizationService = Evently.Core.Services.IAuthorizationService;
@@ -33,7 +35,11 @@ public class AuthController : ControllerBase
     public async Task<ActionResult> Login([FromBody] UserLoginDto dto)
     {
         var token = await _authorizationService.LogInUser(dto.Email, dto.Password);
-        return Ok(new { token = token });
+        return Ok(new TokenOutputDto
+        {
+            Token = token,
+            Expires = DateTime.Now + AuthOptions.TokenLifetime
+        });
     }
 
     /// <summary>
@@ -47,7 +53,29 @@ public class AuthController : ControllerBase
     {
         var model = AuthMapper.RegistrationDtoToModel(dto);
         var token = await _authorizationService.RegisterUser(model);
-        return Ok(new { token = token });
+        return Ok(new TokenOutputDto
+        {
+            Token = token,
+            Expires = DateTime.Now + AuthOptions.TokenLifetime
+        });
+    }
+
+    /// <summary>
+    /// Возвращает свежий токен для авторизованного пользователя
+    /// </summary>
+    /// <returns></returns>
+    [Authorize]
+    [HttpGet("refresh")]
+    public async Task<IActionResult> RefreshToken()
+    {
+        var userId = _userContext.UserId;
+        var user = await _userService.GetUserAsync(userId);
+        var token = TokenHelper.GetAuthToken(user);
+        return Ok(new TokenOutputDto
+        {
+            Token = token,
+            Expires = DateTime.UtcNow + AuthOptions.TokenLifetime
+        });
     }
 
     /// <summary>
